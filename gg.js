@@ -65,6 +65,27 @@
     return element && element.nodeType === Node.ELEMENT_NODE;
   };
 
+  gg.dom.byClass = function (selector, element) {
+    if (!element) {
+      element = document;
+    }
+
+    return element.getElementsByClassName(selector);
+  }
+
+  gg.dom.children = function (element) {
+    var children = element.children,
+      result = [];
+
+    for (var i = 0, len = children.length; i < len; i++) {
+      if (isElement(children[i])) {
+        result.push(children[i]);
+      }
+    }
+
+    return result;
+  };
+
   gg.dom.attributes = function (element) {
     var attributes = [],
       attrs = element.attributes;
@@ -90,6 +111,11 @@
     }
   };
 
+  /**
+   * DOM Style Computed
+   * @param {object} element "selected element Node"
+   * @param {string} value   "class name"
+   */
   gg.dom.addClass = function (element, value) {
     if (value === undefined) {
       return;
@@ -104,6 +130,29 @@
         this.prop(element, 'class', className);
       }
     }
+  };
+
+  gg.dom.removeClass = function (element, value) {
+    element.classList.remove(value);
+  };
+
+  gg.dom.toggleClass = function (element, value) {
+    element.classList.toggle(value);
+  };
+
+  gg.dom.hasClass = function (element, value) {
+    return element.classList.contains(value);
+  }
+
+  /**
+   * data attr
+   */
+  gg.dom.data = function (element, attr, value) {
+    if (undefined === value) {
+      return element.dataset.attr;
+    }
+
+    element.dataset.attr = value;
   };
 
   gg.dom.firstChild = function (element) {
