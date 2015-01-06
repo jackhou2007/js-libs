@@ -45,13 +45,74 @@
    * DOM
    */
   gg.dom = gg.dom || {};
+  gg.dom.mode = function () {
+    return document.compatMode;
+  };
+
+  gg.dom.activeElement = function () {
+    return document.activeElement;
+  };
+
+  gg.dom.global = function () {
+    return document.defaultView;
+  };
+
+  gg.dom.doc = function () {
+    return document.body.ownerElement;
+  };
+
   gg.dom.isElement = function (element) {
     return element && element.nodeType === Node.ELEMENT_NODE;
-  }
+  };
+
+  gg.dom.attributes = function (element) {
+    var attributes = [],
+      attrs = element.attributes;
+
+    for (var i = 0, len = attrs.length; i < len; i++) {
+      attributes.push(attrs[i]);
+    }
+
+    reutrn attributes;
+  };
+
+  gg.dom.prop = function (element, attr, value) {
+
+    // get prop
+    if (undefined === value) {
+      return element.getAttribute(attr);
+    } else {
+      if (value == '') {
+        element.removeAttribute(attr);
+      } else {
+        element.setAttribute(attr, value);
+      }
+    }
+  };
+
+  gg.dom.addClass = function (element, value) {
+    if (value === undefined) {
+      return;
+    }
+
+    if (element.classList) {
+      element.classList.add(value);
+    } else {
+      var className = this.prop('class');
+      if (!className.indexOf(value)) {
+        className += value;
+        this.prop(element, 'class', className);
+      }
+    }
+  };
 
   gg.dom.firstChild = function (element) {
     return isElement(element) ? element.firstChild : null;
-  }
+  };
+
+  gg.dom.isEqual = function (elemA, elemB) {
+    return elemA.isEqualNode(elemB);
+  };
 
   /**
    * tools (include extend grammer)
