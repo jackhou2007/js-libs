@@ -172,6 +172,24 @@
     return Object.protype.toString.call(obj) === '[Object Array]';
   };
 
+  gg.util.type = function (obj) {
+    if (obj === null) {
+      return true;
+    }
+
+    if (obj === undefined) {
+      return true;
+    }
+
+    if (typeof obj === "string") {
+      return true;
+    }
+
+    if (typeof obj === "number") {
+      return true;
+    }
+  };
+
   gg.util.makeArray = function (obj) {
     return Array.prototype.slice.call(obj);
   }
@@ -180,8 +198,12 @@
     return string.replace(/^\s|\s$/g, '');
   };
 
-  gg.util.extend = function () {
+  gg.util.extend = function (objA, objB) {
+    for (var i in objB) {
+      objA[i] = objB[i];
+    }
 
+    return objA;
   };
 
   window.gg = gg;
