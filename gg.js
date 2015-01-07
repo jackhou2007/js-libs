@@ -144,18 +144,25 @@
   };
 
   gg.dom.addClass = function (element, value) {
-    if (value === undefined) {
-      return;
-    }
-
-    if (this.hasClass(element, value)) {
-      return;
-    }
-
-    if (element.classList) {
-      element.classList.add(value);
-    } else {
-      element.className += ' ' + value;
+    if (typeof value == "string") {
+      if (element.nodeType == Node.ELEMENT_NODE) {
+        if ('classList' in element) {
+          element.classList.add(value);
+        } else {
+          if (!element.className) {
+            element.className = value;
+          } else {
+            var className = (element.className + " " + value).match(/\S/g);
+            className.sort();
+            for (var i = 0, len = className.length; i < len; i++) {
+              if (className[i] == className[i+1]) {
+                className.splice(i, 1);
+              }
+            }
+            element.className = className.join(" ");
+          }
+        }
+      }
     }
   };
 
