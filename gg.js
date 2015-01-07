@@ -190,6 +190,11 @@
     element.classList.toggle(value);
   };
 
+  gg.dom.replaceClass = function (element, old, neo) {
+    this.removeClass(element, old);
+    this.addClass(element, neo);
+  };
+
 
   /**
    * data attr
