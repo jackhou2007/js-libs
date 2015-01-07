@@ -13,5 +13,5 @@
     window.util.extend({}, this.defaults, options);
   }
 
-  window.ajax = ajax;
+  window.gg.ajax = ajax;
 }).call(this);
