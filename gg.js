@@ -97,6 +97,17 @@
     reutrn attributes;
   };
 
+  /**
+   * check the attr is a customer attribute
+   * @param  {string}  attr attribute value
+   * @param  {element}  host html node element
+   * @return {Boolean}
+   */
+  gg.dom.isAttribute = function (attr, host) {
+    host = host || document.createElement('div');
+    return host.getAttribute(attr) === null && host[attr] === undefined;
+  };
+
   gg.dom.prop = function (element, attr, value) {
 
     // get prop
@@ -116,33 +127,62 @@
    * @param {object} element "selected element Node"
    * @param {string} value   "class name"
    */
+  gg.dom.getClass = function (element) {
+    if (element.classList) {
+      return element.classList;
+    } else {
+      return element.className.replace(/\s+/, " ").split(" ");
+    }
+  };
+
+  gg.dom.hasClass = function (element, value) {
+    if ('classList' in element) {
+      return element.classList.contains(value);
+    } else {
+      return -1 !== (" " + element.className + " ").indexOf(" " + value + " ");
+    }
+  };
+
   gg.dom.addClass = function (element, value) {
     if (value === undefined) {
+      return;
+    }
+
+    if (this.hasClass(element, value)) {
       return;
     }
 
     if (element.classList) {
       element.classList.add(value);
     } else {
-      var className = this.prop('class');
-      if (!className.indexOf(value)) {
-        className += value;
-        this.prop(element, 'class', className);
-      }
+      element.className += ' ' + value;
     }
   };
 
   gg.dom.removeClass = function (element, value) {
-    element.classList.remove(value);
+    if (value === undefined) {
+      return;
+    }
+
+    if (!this.hasClass(element, value)) {
+      return;
+    }
+    if ('classList' in element) {
+      element.classList.remove(value);
+    } else {
+      var reg = new RegExp('(\\s|^)' + value + '(\\s|$)');
+      element.className = element.className.replace(reg, " ");
+    }
   };
+
+  gg.dom.clearClass = function (element) {
+    element.className = "";
+  }
 
   gg.dom.toggleClass = function (element, value) {
     element.classList.toggle(value);
   };
 
-  gg.dom.hasClass = function (element, value) {
-    return element.classList.contains(value);
-  }
 
   /**
    * data attr
@@ -205,6 +245,19 @@
 
     return objA;
   };
+
+  /**
+   * support features
+   */
+
+  /**
+   * check browser diff the origin attr vs custmer attr
+   */
+  gg.support.setGetAttribute = function () {
+    var el = document.createElement('div');
+    el.setAttribute("className", "t");
+    return el.className !== "t";
+  }
 
   window.gg = gg;
 })(window, document);
