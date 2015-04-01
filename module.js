@@ -52,3 +52,12 @@ var jsLazySingleton = (function () {
 var singleon = jsLazySingleton.getInstance();
 var property = singleon.property;
 console.log(property);
+
+
+// inheirts
+function inheirts(subClass, superClass) {
+  var F = new Function();
+  F.prototype = superClass.prototype;
+  subClass.prototype = new F();
+  subClass.prototype.constructor = subClass;
+}

@@ -4,7 +4,7 @@ function getAttr(ele, attr) {
     var attrs = ele.attributes,
       len = attrs.length;
 
-    for (var i=0; i<len; i++) {
+    for (var i = 0; i < len; i++) {
       if (attrs[i].nodeName === attr) {
         result = attrs[i].nodeValue;
       }
